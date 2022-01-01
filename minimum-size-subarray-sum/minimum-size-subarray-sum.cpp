@@ -1,20 +1,21 @@
 class Solution {
 public:
     int minSubArrayLen(int target, vector<int>& nums) {
-        int n = nums.size();
-        int i = 0, j = 0;
-        int curr_sum = 0, ans = n+1;
-        while(j<n) {
-            curr_sum += nums[j];
-            j++;
-            while(curr_sum>=target && i<j) {
-                ans = min(ans, j-i);
-                // cout << i << " " << j << '\n';
-                curr_sum -= nums[i];
-                i++;
-            }
+        int n = nums.size(), ans = n+1;
+        vector<int> prefix(n);
+                
+        prefix[0] = nums[0];
+        for(int i = 1; i<n; i++) {
+            prefix[i] = prefix[i-1] + nums[i];
         }
-        if(ans == n+1) ans = 0;
-        return ans;
+        
+        for(int i = 0; i<n; i++) {
+            int to_find = target;
+            if(i>0) to_find += prefix[i-1];
+            if(to_find>prefix[n-1])continue;
+            int index = lower_bound(prefix.begin(), prefix.end(), to_find) - prefix.begin();
+            ans = min(ans, index-i+1);
+        } 
+        return ans == n+1 ? 0 : ans;
     }
 };
