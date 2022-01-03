@@ -1,19 +1,13 @@
 class Solution {
 public:
     int findJudge(int n, vector<vector<int>>& trust) {
-        vector<pair<bool, int>> candidature(n);
-        for(int i = 0; i<n; i++) {
-            candidature[i].first = true;
-        }
+        vector<int> candidature(n+1, 0);
+        for(auto &t: trust)
+            candidature[t[0]]--, candidature[t[1]]++;
         
-        for(auto edge : trust) {
-            candidature[edge[0]-1].first = false;
-            candidature[edge[1]-1].second++;
-        }
-        
-        for(int i = 0; i<n; i++) {
-            if(candidature[i].first and candidature[i].second == n-1) 
-                return i+1;
+        for(int i = 1; i<=n; i++) {
+            if(candidature[i] == n-1) 
+                return i;
         }
         return -1;
     }
