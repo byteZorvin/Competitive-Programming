@@ -1,34 +1,31 @@
 class Solution {
-public:
-    vector<vector<string>> partition(string s) {
-        vector<vector<string>> result;
-        vector<string> path;
-        partition(s, 0, path, result);//dfs calls
-        return result;
-    }
-private: 
-    //DFS steps
-    void partition(string& s, int start, vector<string>& path, vector<vector<string>>& result) {
-        int n = s.length();
-        if (start == n) {
-            result.push_back(path);
-        } else {
-            for (int i = start; i < n; i++) {
-                if (isPalindrome(s, start, i)) {
-                    path.push_back(s.substr(start, i - start + 1));
-                    partition(s, i + 1, path, result);
-                    path.pop_back();
-                }
-            }
-        }
-    }
-    //helper function to safe check whether a substr is palindrome or not
-    bool isPalindrome(string& s, int l, int r) {
-        while (l < r) {
-            if (s[l++] != s[r--]) {
+private:
+    bool checkPalindrome(string &s, int start, int end) {
+        while(start<end) {
+            if(s[start++] != s[end--]) 
                 return false;
-            }
         }
         return true;
+    }
+private:
+    void dfs(vector<vector<string>> &result, string &s, int start, vector<string> &currList) {
+        if(start == s.size()) {
+            result.push_back(currList);
+            return;
+        }
+        for(int end = start; end<s.size(); end++) {
+            if(checkPalindrome(s, start, end)) {
+                currList.push_back(s.substr(start, end-start+1));
+                dfs(result, s, end+1, currList);
+                currList.pop_back();
+            }
+        }
+    }
+public:
+    vector<vector<string>> partition(string s) {
+        vector<string> currList;
+        vector<vector<string>> result;
+        dfs(result, s, 0, currList);
+        return result;
     }
 };
