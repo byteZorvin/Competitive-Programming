@@ -1,33 +1,27 @@
 class Solution {
 public:
     int minSwaps(vector<int>& nums) {
-        int n = nums.size();
-        vector<int> arr(2*n);
-        int ones = 0;
-        for(int j = 0; j<2; j++) {
-            for(int i = 0; i<n; i++){
-                arr[i+j*n] = nums[i];
-                if(nums[i]) ones++;
-            }
+        int n = nums.size(), totalOnes = 0;
+        for(int i = 0; i<n; i++) {
+            if(nums[i] == 1) totalOnes++;
         }
-        ones /= 2;
-        if(ones == 0) return 0;
-        int zeros = 0;
-        int start = 0, end = -1, ans = 2*n;
-        while(end<2*n) {
-            if(end-start+1==ones) {
-                ans = min(ans, zeros);
-            }
-            if(end-start+1< ones) {
-                end++;
-                if(end<2*n) 
-                    if(arr[end] == 0) zeros++;
-            }
-            else{
-                if(arr[start]==0) zeros--;
-                start++;
-            }
+        if(totalOnes == 0 || totalOnes == n) {
+            return 0;
         }
-        return ans == 2*n ? 0 : ans;
+        int count = 0, start = 0, ans = n;
+        for(int i = 0; i<totalOnes; i++) {
+            if(nums[i] == 0) count++;
+        }
+        ans = min(ans, count);
+        start++;
+        for(int i = start; i<n; i++) {
+            int j = (i+totalOnes-1)%n;
+            if(nums[i-1] == 0 && nums[j] == 1)
+                count--;
+            else if(nums[i-1] == 1 and nums[j] == 0) 
+                count++;
+            ans = min(ans, count);
+        }
+        return ans;
     }
 };
