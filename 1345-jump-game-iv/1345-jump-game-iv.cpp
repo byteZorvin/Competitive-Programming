@@ -2,42 +2,44 @@ class Solution {
 public:
     int minJumps(vector<int>& arr) {
         int n = arr.size();
-        if(n==1) return 0;
-        unordered_map<int, vector<int>> m;
-        for(int i = 0; i<n; i++){
-            m[arr[i]].push_back(i);
+        if(n == 1) return 0;
+        
+        // creating and filling the map 
+        unordered_map<int, vector<int>> mp;
+        for(int i = 0; i<n; i++) {
+            mp[arr[i]].push_back(i);
         }
+        int step = 0;
         
         queue<int> q;
         q.push(0);
-        int step = 0;
-        while(!q.empty()){
-            step++;
+        
+        while(!q.empty()) {
             int size = q.size();
-            for(int i = 0; i< size; i++){
-                int x = q.front();
+            step++;
+            while(size--) {
+                int j = q.front();
                 q.pop();
                 
-                // jump to x+1
-                if(x+1 < n && m.count(arr[x+1])){
-                    if(x+1 == n-1) 
-                        return step;
-                    q.push(x+1);
+                if(j>0 && mp.find(arr[j-1]) != mp.end()) {
+                    q.push(j-1);
                 }
-                // jump to x-1
-                if(x-1 >= 0 && m.count(arr[x-1])){
-                    q.push(x-1);
+                
+                if(j+1<n && mp.find(arr[j+1]) != mp.end()) {
+                    if(j+1 == n-1) return step;
+                    q.push(j+1);
                 }
-                // check for arr[x] == arr[x]
-                if(m.count(arr[x])){
-                    for(auto a : m[arr[x]]){
-                        if(a == n-1) return step;
-                        q.push(a);
+                
+                if(mp.find(arr[j]) != mp.end()) {
+                    for(auto &k : mp[arr[j]]) {
+                        if(k==n-1) return step;
+                        q.push(k);
                     }
                 }
-                m.erase(arr[x]);
+                mp.erase(arr[j]);
             }
         }
+        
         return step;
     }
 };
