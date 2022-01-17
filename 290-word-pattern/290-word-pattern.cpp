@@ -4,12 +4,13 @@ public:
         istringstream str(s);
         unordered_map<string, int> s2i;
         unordered_map<char, int> c2i;
-        int i, n = pattern.size();
+        int i = 1, n = pattern.size();
+          
         for(string word; str>>word; i++) {
-            if(i==n || s2i[word] != c2i[pattern[i]]) 
+            if(i==n+1 || s2i[word] != c2i[pattern[i-1]]) 
                 return false;
-            s2i[word] = c2i[pattern[i]] = i+1;
+            s2i[word] = c2i[pattern[i-1]] = i;
         }
-        return i==n;
+        return i==n+1;
     }
 };
