@@ -1,34 +1,15 @@
 class Solution {
 public:
     bool wordPattern(string pattern, string s) {
-        vector<string> words;
-        int n = s.size();
-        
-        string curr = "";
-        for(int i = 0; i<n; i++) {
-            if(s[i] == ' ') {
-                words.push_back(curr);
-                curr = "";
-            }
-            else 
-                curr += s[i];
+        istringstream str(s);
+        unordered_map<string, int> s2i;
+        unordered_map<char, int> c2i;
+        int i, n = pattern.size();
+        for(string word; str>>word; i++) {
+            if(i==n || s2i[word] != c2i[pattern[i]]) 
+                return false;
+            s2i[word] = c2i[pattern[i]] = i+1;
         }
-        if(!curr.empty()) words.push_back(curr);
-        if(words.size() != pattern.size()) return false;
-        unordered_set<string> available(words.begin(), words.end());
-        
-        unordered_map<char, string> bijection;
-        for(int i = 0; i<words.size(); i++) {
-            auto itr = bijection.find(pattern[i]);
-            if(itr != bijection.end()) {
-                if(itr->second != words[i]) return 0;
-            }
-            else {
-                if(available.find(words[i]) == available.end()) return 0;
-                bijection[pattern[i]] = words[i];
-                available.erase(words[i]);
-            }
-        }
-        return 1;
+        return i==n;
     }
 };
