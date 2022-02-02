@@ -1,21 +1,22 @@
 class Solution {
-private:
-    bool checkAnagram(string &s, string &p, int start) {
-        int ch[26] = {0};
-        for(int i = 0; i<p.size(); i++) {
-            ch[s[i + start] - 'a']++;
-            ch[p[i] - 'a']--;
-        }
-        return count_if(begin(ch), end(ch), [](int i){ return i != 0; }) == 0;
-    }
 public:
     vector<int> findAnagrams(string s, string p) {
-        vector<int> indexes;
-        int n = s.size(), m = p.size();
-        for(int i = 0; i+m-1<n; i++) {
-            if(checkAnagram(s, p, i)) 
-                indexes.push_back(i);
+        unordered_map<char, int>sm, pm;
+        for(auto &ch: p) pm[ch]++;
+        
+        vector<int> indices;
+        int j = 0, n = s.size(), m = p.size(), perfect = 0;
+        for(int i = 0; i<n; i++) {
+            sm[s[i]]++;
+            if(i-j+1 == m) {
+                if(sm == pm)
+                    indices.push_back(j);
+                sm[s[j]]--;
+                if(sm[s[j]] == 0) 
+                    sm.erase(s[j]);
+                j++;
+            }
         }
-        return indexes;
+        return indices;
     }
 };
