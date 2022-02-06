@@ -8,65 +8,29 @@
  *     ListNode(int x, ListNode *next) : val(x), next(next) {}
  * };
  */
-class Solution {
-// private:
-//     ListNode* tail = NULL, *head = NULL;
-private:
-    // void mergeList(ListNode*first, ListNode* second) {
-    //     while(first || second) {
-    //         if(first == NULL) {
-    //             tail->next = second;
-    //             tail = tail->next;
-    //             second = second->next;
-    //         }
-    //         else if(second == NULL) {
-    //             tail->next = first;
-    //             tail = tail->next;
-    //             first = first->next;
-    //         }
-    //         else if(first->val <= second->val) {
-    //             tail->next = first;
-    //             tail = tail->next;
-    //             first = first->next;
-    //         }
-    //         else {
-    //             tail->next = second;
-    //             tail->next = tail;
-    //             second->next = second;
-    //         }
-    //         // ListNode* &workingNode = !first? second : !second ? first : first->val <= second->val ? first:second;
-    //         // tail->next = exchange(workingNode, workingNode->next);
-    //         // tail = tail->next;
-    //     }
-    // }
+class comp {
+public:
+    bool operator() (const ListNode* left, const ListNode* right) {
+        return left->val > right->val;
+    }
+};
+
+
+class Solution {    
 public:
     ListNode* mergeKLists(vector<ListNode*>& lists) {
-        // int n = lists.size();
-        // ListNode dummy; dummy.next = NULL;
-        // tail = head = &dummy;
-        // for(int i = 1; i<n; i+=2) {
-        //     mergeList(lists[0], lists[i]);
-        //     lists[0] = head;
-        // }
-        // if(n&1) tail->next = lists[n-1];
-        // return head->next;
-        
-        vector<int> values;
-        for(int i = 0; i<lists.size(); i++) {
-            ListNode* curr = lists[i];
-            while(curr) {
-                values.push_back(curr->val);
-                curr = curr->next;
-            }
+        priority_queue<ListNode*, vector<ListNode*>, comp> pq;
+        ListNode dummy;
+        ListNode* head = &dummy, *tail = &dummy;
+        for(auto &list: lists) {
+            if(list) pq.push(list);
         }
-        sort(values.begin(), values.end());
         
-        ListNode dummy; 
-        ListNode * head, *tail;
-        
-        head = tail = &dummy;
-        for(auto &i: values) {
-            tail->next = new ListNode(i);
+        while(!pq.empty()) {
+            auto node = pq.top();
+            pq.pop();
+            if(node->next) pq.push(node->next);
+            tail->next = node;
             tail = tail->next;
         }
         return head->next;
