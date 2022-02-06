@@ -12,26 +12,11 @@ class Solution {
 private:
     ListNode* merge(ListNode* first, ListNode* second) {
         ListNode*head = new ListNode();
-        ListNode* result = head;
+        ListNode* tail = head;
         while(first || second) {
-            if(first == NULL) {
-                result->next = second;
-                break;
-            }
-            if(second == NULL) {
-                result->next = first;
-                break;
-            }
-            else if(first->val <= second->val) {
-                result->next = first;
-                first = first->next;
-                result = result->next;
-            }
-            else {
-                result->next = second;
-                second = second->next;
-                result = result->next;
-            }
+            ListNode* &workingNode = !first? second : !second ? first : first->val <= second->val ? first:second;
+            tail->next = exchange(workingNode, workingNode->next);
+            tail = tail->next;
         }
         return head->next;
     }
