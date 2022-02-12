@@ -1,63 +1,32 @@
 class Solution {
-private:
-    void Makegraph(vector<string>& wordList, vector<vector<int>>& adj, unordered_map<string, int>& s) {
-        int n = wordList.size(), m = wordList[0].size();
-        s.insert({wordList[0], 0});
-        for(int i = 1; i<n; i++) {
-            for(int j = 0; j<m; j++) {
-                string str = wordList[i];
-                char c = str[j];
-                for(int k = 0; k<26; k++) {
-                    if(c == 'a' + k) continue;
-                    str[j] = 'a' + k;
-                    auto it = s.find(str);
-                    if(it != s.end())
-                        adj[i].push_back(it->second), adj[it->second].push_back(i);
-                }
-            }
-            s.insert({wordList[i], i});
-        }
-    }
-private:
-    int ShortestPath(vector<string>& wordList, vector<bool>& vis, string endWord, vector<vector<int>>& adj) {
-        queue<int> q;
-        int n = wordList.size();
-        q.push(n-1);
-        vis[n-1] = true;
-        
+public:
+    int ladderLength(string beginWord, string endWord, vector<string>& wordList) {
+        unordered_set<string> dict(wordList.begin(), wordList.end());
+        queue<string> q; q.push(beginWord);
         int steps = 0;
         
         while(!q.empty()) {
-            int sz = q.size();
             steps++;
+            int sz = q.size();
             for(int i = 0; i<sz; i++) {
-                int x = q.front();
+                string x = q.front();
                 q.pop();
                 
-                if(wordList[x] == endWord) {
-                    return steps;
-                }
+                if(x == endWord) return steps;
                 
-                for(auto &w: adj[x]) {
-                    if(!vis[w]) {
-                        vis[w] = 1;
-                        q.push(w);
+                for(int j = 0; j<x.size(); j++) {
+                    char c = x[j];
+                    for(int k = 0; k<26; k++) {
+                        x[j] = 'a' + k;
+                        if(dict.find(x) != dict.end()) {
+                            dict.erase(x);
+                            q.push(x);
+                        }
                     }
+                    x[j] = c;
                 }
             }
         }
-        
         return 0;
-    }
-    
-public:
-    int ladderLength(string beginWord, string endWord, vector<string>& wordList) {
-        wordList.push_back(beginWord);
-        int n = wordList.size();
-        vector<vector<int>> adj(n);
-        unordered_map<string, int> s; 
-        Makegraph(wordList, adj, s);
-        vector<bool> vis(n, false);
-        return ShortestPath(wordList, vis, endWord, adj);
     }
 };
