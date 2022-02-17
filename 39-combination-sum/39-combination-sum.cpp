@@ -1,22 +1,25 @@
 class Solution {
     vector<vector<int>> ans;
 private:
-    void helper(vector<int>&candidates, vector<int>&current, int sum, int i) {
-        if(sum<0 || i>=candidates.size()) return;
+    void backtrack(vector<int>&candidates, vector<int>&subset, int sum, int l) {
         if(sum == 0) {
-            ans.push_back(current);
+            ans.push_back(subset);
             return;
         }
-        helper(candidates, current, sum, i+1);
-        current.push_back(candidates[i]);
-        helper(candidates, current, sum-candidates[i], i);
-        current.pop_back();
+        int r = candidates.size();
+        for(int i = l; i<r; i++) {
+            if(candidates[i]<=sum) {
+                subset.push_back(candidates[i]);
+                backtrack(candidates, subset, sum-candidates[i], i);
+                subset.pop_back();
+            }
+        }
     }
 public:
     vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
-        vector<int> current;
         ans = vector<vector<int>>();
-        helper(candidates, current, target, 0);
+        vector<int> subset;
+        backtrack(candidates, subset, target, 0);
         return ans;
     }
 };
