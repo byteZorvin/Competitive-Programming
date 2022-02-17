@@ -13,6 +13,7 @@ private:
                 backtrack(candidates, subset, sum-candidates[i], i);
                 subset.pop_back();
             }
+            else return;
         }
     }
 public:
