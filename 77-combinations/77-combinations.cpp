@@ -1,18 +1,19 @@
 class Solution {
-    vector<vector<int>> ans;
-private:
-    void helper(int n, int k, int start, vector<int> combination) {
-        if(k == 0) ans.push_back(combination);
-        for(int i = start; i<=n; i++) {
-            combination.push_back(i);
-            helper(n, k-1, i+1, combination);
-            combination.pop_back();
-        }
-    }
 public:
+    vector<vector<int>> ans;
+    void s(vector<int>& v, int n, int k, int i){
+        if(i>n) return ;
+        s(v, n, k, i+1);
+        v.push_back(i);
+        s(v, n, k, i+1);
+        if(v.size()==k){
+            ans.push_back(v);
+        }
+        v.pop_back();
+    }
     vector<vector<int>> combine(int n, int k) {
-        vector<int> combination;
-        helper(n, k, 1, combination);
+        vector<int> v;
+        s(v, n, k, 1);
         return ans;
     }
 };
