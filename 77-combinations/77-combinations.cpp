@@ -1,7 +1,7 @@
 class Solution {
     vector<vector<int>> ans;
 private:
-    void helper(int n, int k, int start, vector<int> &combination) {
+    void helper(int n, int k, int start, vector<int> combination) {
         if(k == 0) ans.push_back(combination);
         for(int i = start; i<=n; i++) {
             combination.push_back(i);
