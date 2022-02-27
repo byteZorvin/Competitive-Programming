@@ -13,7 +13,7 @@ class Solution {
     int ans = 0;
     map<int, int> m;
 private:
-    void dfs(TreeNode* node, long long x, int level) {
+    void dfs(TreeNode* node, int x, int level) {
         if(node == NULL) return;  
         if(m.find(level) == m.end()) {
             m[level] = x;
@@ -21,7 +21,7 @@ private:
         }
         else 
             x = x - m[level];
-        ans = max((long long)ans, x + 1);
+        ans = max(ans, x + 1);
         dfs(node->left, (long long)2*x + 1, level+1);
         dfs(node->right, (long long)2*x + 2, level+1);
     }
