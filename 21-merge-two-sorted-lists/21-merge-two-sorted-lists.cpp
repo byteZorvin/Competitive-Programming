@@ -14,15 +14,13 @@ public:
         ListNode* head = new ListNode();
         ListNode* tail = head;
         while(list1 && list2) {
-            ListNode*& workingNode = list1->val < list2->val ? list1 : list2;
+            ListNode*&workingNode = list1->val < list2->val ? list1 : list2;
             tail->next = workingNode;
             workingNode = workingNode->next;
             tail = tail->next;
         }
-        if(list1) 
-            tail->next = list1;
-        else 
-            tail->next = list2;
+        if(list1) tail->next = list1;
+        else tail->next = list2;
         return head->next;
     }
 };
