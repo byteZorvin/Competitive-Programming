@@ -18,20 +18,17 @@ class Solution {
 public:
     Node* copyRandomList(Node* head) {
         unordered_map<Node*, Node*> mp;
-        Node*dummy = new Node(0);
-        Node* curr = head, *tail = dummy;
-        while(curr) {
-            if(mp.find(curr) == mp.end()) {
-                mp[curr] = new Node(curr->val);
-            }
-            if(curr->random && mp.find(curr->random) == mp.end()) {
-                mp[curr->random] = new Node(curr->random->val);
-            }
-            tail->next = mp[curr];
-            tail->next->random = mp[curr->random];
-            tail = tail->next;
-            curr = curr->next;
+        Node* temp = head; 
+        while(temp) {
+            mp[temp] = new Node(temp->val);
+            temp = temp->next;
         }
-        return dummy->next;
+        temp = head;
+        while(temp) {
+            mp[temp]->next = mp[temp->next];
+            mp[temp]->random = mp[temp->random];
+            temp = temp->next;
+        }
+        return mp[head];
     }
 };
