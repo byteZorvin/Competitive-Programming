@@ -11,6 +11,6 @@ public:
         while(j<n && st.top() == popped[j]) {
             st.pop(), j++;
         }
-        return st.empty();
+        return j==n;
     }
 };
