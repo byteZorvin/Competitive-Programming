@@ -1,7 +1,15 @@
 class Solution {
+    int helper(int n, int *dp) {
+        if(dp[n] != -1) {
+            return dp[n];
+        }
+        if(n<=1) return dp[n] = n;
+        else return dp[n] = helper(n-1, dp) + helper(n-2, dp);
+    }
 public:
     int fib(int n) {
-        if(n <= 1) return n;
-        return fib(n-1) + fib(n-2);
+        int dp[n+1];
+        memset(dp, -1, sizeof(dp));
+        return helper(n, dp);
     }
 };
