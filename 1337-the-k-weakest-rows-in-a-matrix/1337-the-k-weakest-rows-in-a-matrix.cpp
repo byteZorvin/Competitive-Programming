@@ -1,26 +1,32 @@
-class Solution {
-    static bool compare(pair<int, int> &a, pair<int, int> &b) {
+class compare {
+public:
+    bool operator() (pair<int, int> &a, pair<int, int> &b) {
         if(a.first == b.first) 
             return a.second < b.second;
         return a.first < b.first;
     }
+};
+
+
+class Solution {
+private:
+    int getStrength(vector<int>&a) {
+        return upper_bound(a.begin(), a.end(), 1, greater<int>()) - a.begin();
+    }
 public:
     vector<int> kWeakestRows(vector<vector<int>>& mat, int k) {
-        vector<pair<int, int>> rows;
+        priority_queue<pair<int, int>, vector<pair<int, int>>, compare> pq;
+        int n = mat.size();
+        for(int i = 0; i<n; ++i) {
+            pq.push({getStrength(mat[i]), i});
+            if(pq.size() > k) pq.pop(); 
+        }
         vector<int> ans;
-        int m = mat.size(), n = mat[0].size();
-        for(int i = 0; i<m; i++) {
-            int ones = 0;
-            for(int j = 0; j<n; j++) {
-                if(mat[i][j] == 1) 
-                    ones++;
-            }
-            rows.push_back({ones, i});
+        while(pq.size()) {
+            ans.push_back(pq.top().second);
+            pq.pop();
         }
-        sort(rows.begin(), rows.end(), compare);
-        for(int i = 0; i<k; i++) {
-            ans.push_back(rows[i].second);
-        }
+        reverse(ans.begin(), ans.end());
         return ans;
     }
 };
