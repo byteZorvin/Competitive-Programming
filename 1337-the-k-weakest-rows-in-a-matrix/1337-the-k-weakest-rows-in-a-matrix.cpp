@@ -1,13 +1,3 @@
-class compare {
-public:
-    bool operator() (pair<int, int> &a, pair<int, int> &b) {
-        if(a.first == b.first) 
-            return a.second < b.second;
-        return a.first < b.first;
-    }
-};
-
-
 class Solution {
 private:
     int getStrength(vector<int>&a) {
@@ -15,7 +5,7 @@ private:
     }
 public:
     vector<int> kWeakestRows(vector<vector<int>>& mat, int k) {
-        priority_queue<pair<int, int>, vector<pair<int, int>>, compare> pq;
+        priority_queue<pair<int, int>> pq;
         int n = mat.size();
         for(int i = 0; i<n; ++i) {
             pq.push({getStrength(mat[i]), i});
