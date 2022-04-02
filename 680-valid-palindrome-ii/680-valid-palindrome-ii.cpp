@@ -1,14 +1,30 @@
 class Solution {
-    bool helper(string &s, int l, int h, bool deleted) {
-        if(l>=h) return true;
-        if(s[l] != s[h]) {
-            if(deleted) return false;
-            else return helper(s, l+1, h, true) || helper(s, l, h-1, true);
-        }
-        else return helper(s, l+1, h-1, deleted);
-    }
 public:
     bool validPalindrome(string s) {
-        return helper(s, 0, s.size()-1, false);
+        int l = 0, h = s.size()-1;
+        while(l<h) {
+            if(s[l] == s[h]) l++, h--;
+            else {
+                int x = l, y = h-1;
+                bool first = true, second = true;
+                while(x<y) {
+                    if(s[x] != s[y]) {
+                        first = false; 
+                        break;
+                    }
+                    x++, y--;
+                }
+                x = l+1, y = h;
+                while(x<y) {
+                    if(s[x] != s[y]) {
+                        second = false;
+                        break; 
+                    } 
+                    x++, y--;
+                }
+                return first || second; 
+            }
+        }
+        return true;
     }
 };
