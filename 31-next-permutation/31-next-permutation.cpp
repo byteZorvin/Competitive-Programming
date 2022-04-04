@@ -7,7 +7,7 @@ public:
                 int j = i+1;
                 while(j<n && nums[j] > nums[i]) j++;
                 swap(nums[i], nums[j-1]);
-                sort(nums.begin() + i+1, nums.end());
+                reverse(nums.begin()+i+1, nums.end());
                 return;
             }
         }
