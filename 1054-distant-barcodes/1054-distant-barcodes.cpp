@@ -9,18 +9,16 @@ public:
         for(auto &i: mp) 
             pq.push({i.second, i.first});
         
-        vector<int> ans;
+        int i = 0, n = barcodes.size();
+        vector<int> ans(n);
         while(!pq.empty()) {
             auto a = pq.top();
             pq.pop();
-            ans.push_back(a.second);
-            if(!pq.empty()) {
-                auto b = pq.top();
-                pq.pop();  
-                ans.push_back(b.second);
-                if(b.first>1) pq.push({--b.first, b.second});
-            }
-            if(a.first>1) pq.push({--a.first, a.second});
+            while(a.first--) {
+                ans[i] = a.second;
+                i += 2;
+                if(i>=n) i = 1;
+            } 
         }
         return ans;
     }
