@@ -20,10 +20,10 @@ public:
         int x = findPar(node1), y = findPar(node2);
         if(x == y) return false;
         if(rank[x] > rank[y]) {
-            parent[x] = y;
+            parent[y] = x;
         }
         else if(rank[x] < rank[y]) {
-            parent[y] = x;
+            parent[x] = y;
         }
         else {
             parent[x] = y;
