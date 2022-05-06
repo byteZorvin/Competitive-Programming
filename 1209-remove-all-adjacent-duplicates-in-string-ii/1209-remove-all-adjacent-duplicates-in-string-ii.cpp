@@ -1,26 +1,14 @@
 class Solution {
 public:
     string removeDuplicates(string s, int k) {
-        stack<pair<int, int>> st; 
-        for(int i = 0; i<s.size(); ++i) {
-            if(!st.empty() && s[st.top().first] == s[i]) {
-                st.push({i, st.top().second + 1});
-            }
-            else 
-                st.push({i, 1});
-            if(st.top().second == k) {
-                int x = k;
-                while(x--) {
-                    st.pop();
-                }
-            }
+        int i = 0, n = s.size();
+        vector<int> count(n);
+        for(int j = 0; j<n; ++j, ++i) {
+            s[i] = s[j];
+            count[i] = i>0 && s[j] == s[i-1] ? count[i-1] + 1 : 1;
+            if(count[i] == k)
+                i -= k;
         }
-        string ans;
-        while(!st.empty()) {
-            ans += s[st.top().first];
-            st.pop();
-        }
-        reverse(ans.begin(), ans.end());
-        return ans;
+        return s.substr(0, i);
     }
 };
