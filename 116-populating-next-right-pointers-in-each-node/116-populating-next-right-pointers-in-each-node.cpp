@@ -20,19 +20,19 @@ class Solution {
 public:
     Node* connect(Node* root) {
         if(root == NULL) return root;
-        Node*leftmost = root;
-        while(leftmost->left) {
-            Node*curr = leftmost;
-            while(curr) {
-                curr->left->next = curr->right;
-                if(curr->next) {
-                    curr->right->next = curr->next->left;
-                    curr = curr->next;
-                }else
-                    break;
+        
+        Node*leftMost = root;
+        while(leftMost->left != NULL) {
+            Node* head = leftMost;
+            while(head) {
+                head->left->next = head->right;
+                if(head->next) 
+                    head->right->next = head->next->left;
+                head = head->next;
             }
-            leftmost = leftmost->left;
+            leftMost = leftMost->left;
         }
+        
         return root;
     }
 };
