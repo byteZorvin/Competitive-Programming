@@ -1,4 +1,25 @@
 class Solution {
+    void dijkstra(vector<int> &signalRecieved, int source, vector<vector<pair<int, int>>> &adj) {
+        priority_queue<pair<int, int>, vector<pair<int, int>>,
+            greater<pair<int, int>>> q;
+        q.push({0, source});
+        while(!q.empty()) {
+            int currNodeTime = q.top().first;
+            int currNode = q.top().second;
+            q.pop();
+
+            if(currNodeTime > signalRecieved[currNode]) continue;
+
+            for(auto &edge: adj[currNode]) {
+                int neighbour = edge.second;
+                int timeReq = edge.first;
+                if(signalRecieved[neighbour] > currNodeTime + timeReq) 
+                    signalRecieved[neighbour] = currNodeTime + timeReq,
+                    q.push({currNodeTime + timeReq, neighbour});
+            }
+        }
+    }
+    
 public:
     int networkDelayTime(vector<vector<int>>& times, int n, int k) {
         // Build the adjacency list
@@ -10,26 +31,7 @@ public:
         vector<int> signalRecieved(n+1, 1e7);
         signalRecieved[k] = 0;
         
-        queue<int> q;
-        q.push(k);
-        
-        while(!q.empty()) {
-            int n = q.size();
-            for(int i = 0; i<n; i++) {
-                int currNode = q.front();
-                q.pop();
-                
-                int now = signalRecieved[currNode];
-                
-                for(auto &edge: adj[currNode]) {
-                    int neighbour = edge.second;
-                    int timeReq = edge.first;
-                    if(signalRecieved[neighbour] > now + timeReq) 
-                        signalRecieved[neighbour] = now + timeReq,
-                        q.push(neighbour);
-                }
-            }
-        }
+        dijkstra(signalRecieved, k, adj);
         
         int answer = 0;
         for(int node = 1; node <= n; node++) 
