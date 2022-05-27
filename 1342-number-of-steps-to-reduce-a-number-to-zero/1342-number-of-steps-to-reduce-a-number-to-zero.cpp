@@ -1,12 +1,6 @@
 class Solution {
 public:
     int numberOfSteps(int num) {
-        int steps = 0;
-        while(num) {
-            if(num&1) num -= 1;
-            else num >>= 1;
-            steps++;
-        }
-        return steps;
+        return num == 0 ? 0 : sizeof(num)*8 - __builtin_clz(num) + __builtin_popcount(num) -1;
     }
 };
