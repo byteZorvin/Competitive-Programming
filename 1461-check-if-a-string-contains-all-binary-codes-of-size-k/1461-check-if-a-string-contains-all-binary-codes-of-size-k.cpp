@@ -11,7 +11,8 @@ public:
             int curr = stoi(s.substr(i, k), nullptr, 2);
             if(visited[curr] == false)
                 found++, visited[curr] = true;
+            if(found == 1<<k) return true;
         }
-        return found ==  1<<k;
+        return false;
     }
 };
