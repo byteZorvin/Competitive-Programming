@@ -7,33 +7,21 @@
  * };
  */
 class Solution {
-    int getLen(ListNode*headA) {
-        int len = 0;
-        while(headA) {
-            headA = headA->next;
-            len++;
-        }
-        return len;
-    }
 public:
     ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
-        int l1 = getLen(headA), l2 = getLen(headB);
-        if(l1>l2) {
-            while(l1>l2) {
-                headA = headA->next;
-                l1--;
-            }
+        if(headA == NULL || headB == NULL) 
+            return NULL;
+        
+        ListNode*p1 = headA, *p2 = headB;
+        while(p1 != NULL && p2 != NULL && p1 != p2) {
+            p1 = p1->next;
+            p2 = p2->next;
+            
+            if(p1 == p2) return p1;
+            
+            if(p1 == NULL) p1 = headB;
+            if(p2 == NULL) p2 = headA;
         }
-        else {
-            while(l2>l1) {
-                headB = headB->next;
-                l2--;
-            }
-        }
-        while(headA != headB) {
-            headA = headA->next;
-            headB = headB->next;
-        }
-        return headA;
+        return p1;
     }
 };
