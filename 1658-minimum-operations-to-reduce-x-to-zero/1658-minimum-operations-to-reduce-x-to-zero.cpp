@@ -6,9 +6,9 @@ public:
             target += it;
         }
         int i = 0, j = 0, res = -1;
-        while(j<nums.size() && target>=0) {
+        while(j<nums.size() && i<=j) {
             current += nums[j++];
-            while(current > target) {
+            while(current > target && i<=j) {
                 current -= nums[i++];
             }
             if(current == target) 
