@@ -2,18 +2,20 @@ class Solution {
 public:
     int maxProfit(int cap, vector<int>& prices) {
         int n = prices.size();
-        vector<vector<int>> dp(n+1, vector<int>(2*cap+1, 0));
+        vector<int> after(2*cap+1, 0);
+        vector<int> cur(2*cap+1, 0);
         
         for(int ind = n-1; ind>=0; ind--) {
             for(int tranNo = 2*cap-1; tranNo>=0; tranNo--) {
                 if(tranNo%2) {
-                    dp[ind][tranNo] = max(prices[ind] + dp[ind+1][tranNo+1], dp[ind+1][tranNo]);
+                    cur[tranNo] = max(prices[ind] + after[tranNo+1], after[tranNo]);
                 }
                 else 
-                    dp[ind][tranNo] = max(-prices[ind] + dp[ind+1][tranNo+1], dp[ind+1][tranNo]);
+                    cur[tranNo] = max(-prices[ind] + after[tranNo+1], after[tranNo]);
             }
+            after = cur;
         }
         
-        return dp[0][0];
+        return after[0];
     }
 };
