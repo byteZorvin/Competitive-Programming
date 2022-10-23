@@ -4,15 +4,9 @@ select
     join_date, 
     ifnull(count(order_date),0) as orders_in_2019
 from
-    (
-        select 
-            order_date, 
-            order_id,
-            buyer_id
-        from 
-            orders
-        where year(order_date) = '2019'
-    ) o
-        right join
-    users u on o.buyer_id = u.user_id
-group by user_id;
+    users u
+        left join
+    orders o on u.user_id = o.buyer_id
+            and year(o.order_date) = '2019'
+group by u.user_id;
+    
