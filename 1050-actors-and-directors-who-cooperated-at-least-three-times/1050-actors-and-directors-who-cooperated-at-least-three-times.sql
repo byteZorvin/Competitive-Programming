@@ -5,4 +5,4 @@ select
 from    
     actorDirector ad
 group by actor_id, director_id
-having count(1) >= 3;
+having count(*) >= 3;
