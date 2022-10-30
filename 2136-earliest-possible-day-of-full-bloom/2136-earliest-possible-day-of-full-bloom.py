@@ -1,7 +1,7 @@
 class Solution:
     def earliestFullBloom(self, plantTime: List[int], growTime: List[int]) -> int:
         data = list(zip(plantTime, growTime))
-        data.sort(key = lambda x: x[-1], reverse = True)
+        data.sort(key = lambda x: -x[-1])
         
         res = 0
         start_time = 0
