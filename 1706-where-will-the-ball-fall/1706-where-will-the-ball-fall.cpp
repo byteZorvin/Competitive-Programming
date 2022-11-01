@@ -1,24 +1,20 @@
 class Solution {
-    int helper(vector<vector<int>>& grid, int x, int y) {
-        int m = grid.size(), n = grid[0].size();
-        if(x == m) return y;
-        if(grid[x][y] == 1) {
-            if(y == n-1 || grid[x][y+1] == -1)
-                return -1;
-            else return helper(grid, x+1, y+1);
-        }
-        else {
-            if(y == 0 || grid[x][y-1] == 1)
-                return -1;
-            else return helper(grid, x+1, y-1);
-        }
-    }
 public:
     vector<int> findBall(vector<vector<int>>& grid) {
-        vector<int> ans(grid[0].size());
-        for(int i = 0; i<grid[0].size(); i++) {
-            ans[i] = helper(grid, 0, i);
+        int m = grid.size(), n = grid[0].size();
+        vector<int> res;
+        for(int i = 0; i<n; i++) {
+            int i1 = i, i2;
+            for(int j = 0; j<m; j++) {
+                i2 = i1 + grid[j][i1];
+                if(i2<0 || i2>n-1 || grid[j][i1] != grid[j][i2]) {
+                    i1 = -1;
+                    break;
+                }
+                i1 = i2;
+            }
+            res.push_back(i1);
         }
-        return ans;
+        return res;
     }
 };
