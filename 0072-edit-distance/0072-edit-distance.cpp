@@ -5,7 +5,7 @@ class Solution {
         if(j == w2.size()) return w1.size() - i;
         if(i == w1.size()) return w2.size() - j;
         
-        if(w1[i] == w2[j]) return helper(w1, w2, i+1, j+1, dp);
+        if(w1[i] == w2[j]) return dp[i][j] = helper(w1, w2, i+1, j+1, dp);
         else 
             return dp[i][j] =  1 + min({
                             helper(w1, w2, i+1, j, dp), 
