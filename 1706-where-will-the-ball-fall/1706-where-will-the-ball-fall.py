@@ -9,4 +9,4 @@ class Solution:
                     return -1
                 i = i2
             return i
-        return map(test, range(n))
+        return list(map(test, range(n)))
