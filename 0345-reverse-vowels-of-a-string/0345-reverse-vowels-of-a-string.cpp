@@ -5,21 +5,12 @@ class Solution {
     }
 public:
     string reverseVowels(string s) {
-        string vowels;
-        for(auto c: s) {
-            if(isVowel(c))
-                vowels += c;
+        int i = 0, j = s.size() - 1;
+        while(i<j) {
+            while(i<j && !isVowel(s[i])) i++;
+            while(i<j && !isVowel(s[j])) j--;
+            if(i<j) swap(s[i++], s[j--]);
         }
-        string ans;
-        int j = vowels.size() - 1;
-        if(j<0) return s;
-        while(j>=0) {
-            for(auto c: s) {
-                if(!isVowel(c)) 
-                    ans += c;
-                else ans += vowels[j--];
-            }
-        }
-        return ans;
+        return s;
     }
 };
