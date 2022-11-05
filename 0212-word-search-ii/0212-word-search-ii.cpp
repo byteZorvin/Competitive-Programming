@@ -1,9 +1,10 @@
 class TrieNode {
 public:
     bool ends;
+    int count;
     vector<TrieNode*>children;
     
-    TrieNode(): ends(false), children(vector<TrieNode*>(26, NULL)) {}
+    TrieNode(): ends(false), count(0), children(vector<TrieNode*>(26, NULL)) {}
 };
 class Trie {
 public:
@@ -17,6 +18,7 @@ public:
         TrieNode*cur = root;
         for(int i = 0; i<n; i++) {
             int c = word[i] - 'a';
+            cur->count++;
             if(cur->children[c] == NULL) {
                 TrieNode* newNode = new TrieNode();
                 cur->children[c] = newNode;
@@ -25,17 +27,29 @@ public:
         }
         cur->ends = true;
     }
+    
+    void removeWord(string &word) {
+        int n = word.size();
+        TrieNode*node = root;
+        for(int i = 0; i<n; i++) {
+            int ind = word[i] - 'a';
+            node->count--;
+            node = node->children[ind];
+        }
+        node->ends = false;
+    }
 };
 
 class Solution {
+    Trie* trie = new Trie;
     void dfs(vector<vector<char>>&board, int i, int j, string curr, TrieNode*node, vector<string>&ans) {
         char c = board[i][j];
-        if(c == '#' or node->children[c-'a'] == NULL) return;
+        if(c == '#' or node->count<=0 or node->children[c-'a'] == NULL) return;
         curr += c;
         node = node->children[c-'a'];
         if(node->ends){
             ans.push_back(curr);
-            node->ends = false;
+            trie->removeWord(curr);
         } 
         board[i][j] = '#';
         
@@ -49,7 +63,6 @@ class Solution {
 public:
     vector<string> findWords(vector<vector<char>>& board, vector<string>& words) {
         vector<string> ans;
-        Trie* trie = new Trie;
         TrieNode* root = trie->root;
         for(auto w: words) 
             trie->insert(w);
