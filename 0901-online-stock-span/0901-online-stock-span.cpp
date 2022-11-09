@@ -8,10 +8,8 @@ public:
     int next(int price) {
         int currSpan = 1;
         while(st.size() > 0 && st.top().first <= price ) {
-            auto [prevPrice, span] = st.top();
+            currSpan += st.top().second;
             st.pop();
-            
-            currSpan += span;
         }
         st.push({price, currSpan});
         return currSpan;
