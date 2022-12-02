@@ -17,10 +17,6 @@ public:
         sort(fb.begin(), fb.end());
         sort(a.begin(), a.end());
         sort(b.begin(), b.end());
-        if(a != b) return false;
-        for(int i = 0; i<26; i++) {
-            if(fa[i] != fb[i]) return false;
-        }
-        return true;
+        return fa == fb && a == b;
     }
 };
